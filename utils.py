@@ -32,9 +32,22 @@ def get_deepl_key() -> str:
 
 
 def current_week_range() -> tuple[date, date]:
-    """Returns (Monday, Friday) of the current week."""
+    """
+    Returns (Monday, Friday) of the relevant school week based on run date:
+    - Mon–Thu → current week
+    - Fri, Sat, Sun → next week
+    """
     today = date.today()
-    monday = today - timedelta(days=today.weekday())
+    weekday = today.weekday()  # 0=Mon, 1=Tue, ..., 4=Fri, 5=Sat, 6=Sun
+
+    if weekday >= 4:  # Friday(4), Saturday(5), Sunday(6)
+        # Jump to next Monday
+        days_until_next_monday = 7 - weekday
+        monday = today + timedelta(days=days_until_next_monday)
+    else:
+        # Current week's Monday
+        monday = today - timedelta(days=weekday)
+
     friday = monday + timedelta(days=4)
     return monday, friday
 
