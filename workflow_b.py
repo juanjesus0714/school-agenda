@@ -202,7 +202,7 @@ def run_workflow_b() -> None:
 
     with sync_playwright() as p:
         # set True once confirmed working
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         page = browser.new_page()
 
         try:
